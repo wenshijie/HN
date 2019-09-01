@@ -1,0 +1,7 @@
+SELECT day, count(*),count(DISTINCT deviceid)
+from log_edw_hn_source_new.appsearchlog  
+where (get_json_object(kv,'$.keyword') like '%桑树苗%' or get_json_object(kv,'$.cateId')='2000741' or 
+get_json_object(kv,'$.keyCateId3')='2000741')
+and day>=20180901 and day<=20180925
+and id <> 'pagedown'
+GROUP BY day 

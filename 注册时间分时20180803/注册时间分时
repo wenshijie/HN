@@ -1,0 +1,4 @@
+select date(createTime),HOUR(createTime),COUNT(DISTINCT hnUserId)
+FROM hnuser.hnuser
+WHERE createTime>='2018-07-25' and createTime<'2018-08-03'
+GROUP BY date(createTime),HOUR(createTime)

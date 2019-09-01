@@ -1,0 +1,19 @@
+SELECT DISTINCT a.hnUserId,a.userAccount,g.linkMan,f.`name`,c.lastLogonTime,c.mobile
+FROM
+(
+	SELECT hnUserId,userAccount
+	FROM hnuser.hnuserloginlog
+	where logintime>='2018-06-28 00:00:00' 
+	and logintime<='2018-07-05 00:00:00'
+)AS a #登陆过
+JOIN
+(
+	SELECT hnUserId,supplyId
+	FROM b2b_product.supply
+	WHERE state=0 
+)AS b on a.hnUserId=b.hnUserId#有供应
+LEFT JOIN hnuser.hnuseraccount AS c ON a.hnUserId=c.hnUserId #关联手机号
+LEFT JOIN 
+(SELECT d.hnUserId,e.`name` 
+FROM hnuser.user_identity AS d LEFT join hnuser.identity_dict AS e ON d.identityId=e.id)AS f on a.hnUserId=f.hnUserId#关联身份
+LEFT JOIN hnuser.hnuser AS g ON a.hnUserId=g.hnUserId#关联用户姓名

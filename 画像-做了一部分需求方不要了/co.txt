@@ -1,0 +1,78 @@
+我要买 手机类型
+SELECT b.brand,count( a.userid)
+from (SELECT DISTINCT userid
+FROM dw_log.dw_apppagelog
+where f_starttime>='2018-07-03 00:00:00' 
+and f_starttime<='2018-07-10 00:00:00' 
+and current_page='BuyFragment') a--一周点击的用户
+join 
+(SELECT userid,brand
+from dw_log.dw_appdevicelog
+where day='20180709') b on a.userid=b.userid--shebei
+GROUP BY b.brand
+
+我要买 手机屏幕
+SELECT b.screen,count( a.userid)
+from (SELECT DISTINCT userid
+FROM dw_log.dw_apppagelog
+where f_starttime>='2018-07-03 00:00:00' 
+and f_starttime<='2018-07-10 00:00:00' 
+and current_page='BuyFragment') a--一周点击的用户
+join 
+(SELECT userid,screen
+from dw_log.dw_appdevicelog
+where day='20180709') b on a.userid=b.userid 
+GROUP BY b.screen
+我要买 用户身份
+SELECT b.identity_name,count( a.userid)
+from (SELECT DISTINCT userid
+FROM dw_log.dw_apppagelog
+where f_starttime>='2018-07-03 00:00:00' 
+and f_starttime<='2018-07-10 00:00:00' 
+and current_page='BuyFragment') a--一周点击的用户
+join 
+(SELECT hnuserid,identity_name  dw_public.dw_user_identity 
+where day='20180709') b on a.userid=b.hnuserid 
+GROUP BY b.identity_name
+我要买 用户地域 
+SELECT b.province,count( a.userid)
+from (SELECT DISTINCT userid
+FROM dw_log.dw_apppagelog
+where f_starttime>='2018-07-03 00:00:00' 
+and f_starttime<='2018-07-10 00:00:00' 
+and current_page='BuyFragment') a--一周点击的用户
+join 
+(SELECT userid,province
+from dw_log.dw_log_app_start_address
+where day='20180709') b on a.userid=b.userid 
+GROUP BY b.province
+我要买 用户询问时间
+select count(a.userid),a.shijian
+from 
+(
+SELECT  userid,
+case 
+when cast(du_time as int)/(1000*60)>0 and cast(du_time as int)/(1000*60)<=1 then '(0,1]'
+when cast(du_time as int)/(1000*60)>1 and cast(du_time as int)/(1000*60)<=2 then '(1,2]'
+when cast(du_time as int)/(1000*60)>2 and cast(du_time as int)/(1000*60)<=3 then '(2,3]'
+when cast(du_time as int)/(1000*60)>3 and cast(du_time as int)/(1000*60)<=4 then '(3,4]'
+when cast(du_time as int)/(1000*60)>4 and cast(du_time as int)/(1000*60)<=5 then '(4,5]'
+when cast(du_time as int)/(1000*60)>5 and cast(du_time as int)/(1000*60)<=6 then '(5,6]'
+when cast(du_time as int)/(1000*60)>6 and cast(du_time as int)/(1000*60)<=7 then '(6,7]'
+when cast(du_time as int)/(1000*60)>7 and cast(du_time as int)/(1000*60)<=8 then '(7,8]'
+when cast(du_time as int)/(1000*60)>8 and cast(du_time as int)/(1000*60)<=10 then '(9,10]'
+when cast(du_time as int)/(1000*60)>10 and cast(du_time as int)/(1000*60)<=11 then '(10,11]'
+else '(11,]' end shijian 
+FROM dw_log.dw_apppagelog
+where f_starttime >= '2018-07-03' 
+and f_starttime < '2018-07-10' 
+and current_page='BuyFragment'
+) a
+group by a.shijian
+我要买 用户收藏品类
+SELECT b.brand,count( a.userid)
+from (SELECT DISTINCT userid
+FROM dw_log.dw_apppagelog
+where f_starttime>='2018-07-03 00:00:00' 
+and f_starttime<='2018-07-10 00:00:00' 
+and current_page='BuyFragment') a--一周点击的用户

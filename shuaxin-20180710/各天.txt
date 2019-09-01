@@ -1,0 +1,8 @@
+6.28
+
+SELECT DISTINCT c.hnUserId
+FROM b2b_product.supply as a join
+(SELECT supplyId
+FROM b2b_product.supplyupdatetime
+WHERE afterstate=0 and `from`=1 and oper in(0,6,7) and updateTime>='2018-06-28 00:00:00'AND updateTime<='2018-06-29 00:00:00')AS d
+ON c.supplyId=d.supplyId
